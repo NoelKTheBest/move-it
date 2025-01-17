@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://0d7gqdj7sre4"]
+
+[ext_resource type="Script" path="res://backpad.gd" id="1_gas4c"]
+[ext_resource type="Texture2D" uid="uid://33s6x3vxtp6k" path="res://icon.svg" id="1_pjxsr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w306o"]
+size = Vector2(94, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iiblv"]
+size = Vector2(94, 22)
+
+[node name="StaticBody2D" type="StaticBody2D"]
+script = ExtResource("1_gas4c")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_w306o")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.67, 0.0603, 0.0603, 1)
+scale = Vector2(0.734375, 0.15625)
+texture = ExtResource("1_pjxsr")
+flip_v = true
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_iiblv")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

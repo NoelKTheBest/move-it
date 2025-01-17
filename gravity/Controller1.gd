@@ -11,6 +11,7 @@ extends CharacterBody2D
 
 # State variables
 var is_grounded: bool = false
+var on_backpad: bool = false
 
 func _ready():
 	# Set custom gravity (if needed)
@@ -29,7 +30,7 @@ func _physics_process(delta):
 
 	# Horizontal movement logic (smooth acceleration)
 	var target_velocity_x = target_speed * (Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"))
-	velocity.x = move_toward(velocity.x, target_velocity_x, acceleration * delta)
+	if !on_backpad: velocity.x = move_toward(velocity.x, target_velocity_x, acceleration * delta)
 
 	# Vertical movement (jumping and falling)
 	if is_grounded and Input.is_action_just_pressed("ui_accept"):
@@ -42,9 +43,13 @@ func _physics_process(delta):
 	move_and_slide()
 
 # Helper function to smoothly move towards a target value
-func move_toward(current: float, target: float, delta: float) -> float:
-	if current < target:
-		return min(current + delta, target)
-	elif current > target:
-		return max(current - delta, target)
-	return current
+
+
+
+func _on_static_body_2d_touched_pad() -> void:
+	#velocity.x = -10
+	on_backpad = false 
+
+
+func _on_static_body_2d_off_pad() -> void:
+	on_backpad = false
